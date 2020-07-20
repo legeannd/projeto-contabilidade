@@ -2,14 +2,22 @@ import knex from '../database/connection';
 import {Request, Response} from 'express';
 class AccountController {
     async create(request: Request, response: Response) {
-        const {description, field} = request.body;
+        try {
+            const {description, field} = request.body;
 
-        const account = await knex('accounts').insert({
-            description,
-            field
-        });
+            const [id] = await knex('accounts').insert({
+                description,
+                field
+            });
 
-        return response.json(account);
+            return response.json({
+                'id': id,
+                description,
+                field
+            });
+        } catch (e){
+            console.log(e);
+        }
     }
 
     async index(request:Request, response: Response){
