@@ -4,16 +4,24 @@ class AccountController {
     async create(request: Request, response: Response) {
         try {
             const {description, field} = request.body;
+            var nature = '';
+            if(String(field).toLowerCase().includes('ativo')){
+                nature = 'devedora';
+            } else if (String(field).toLowerCase().includes('passivo') || String(field).toLowerCase().includes('patrimônio líquido')) {
+                nature = 'credora';
+            }
 
             const [id] = await knex('accounts').insert({
                 description,
-                field
+                field,
+                nature
             });
 
             return response.json({
                 'id': id,
                 description,
-                field
+                field,
+                nature
             });
         } catch (e){
             console.log(e);
