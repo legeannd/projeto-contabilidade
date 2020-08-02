@@ -4,7 +4,10 @@ import * as Knex from "knex";
 export async function up(knex: Knex): Promise<void> {
     return knex.schema.createTable('accounts', (table) => {
         table.increments('id').primary();
+
+        table.string('type').notNullable();
         table.string('description').notNullable();
+        table.float('value').notNullable();
         table.string('field').notNullable();
         table.string('nature');
 

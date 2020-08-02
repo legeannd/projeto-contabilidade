@@ -10,5 +10,6 @@ routes.get('/', (req,res)=>{
 
 routes.post('/accounts', accountController.create);
 routes.get('/accounts', accountController.index);
+routes.delete('/accounts/:id', accountController.delete);
 
 export default routes;
