@@ -4,10 +4,10 @@ class AccountController {
     async create(request: Request, response: Response) {
         var accounts = [];
         let accountLength = request.body.length;
-        const entry = await knex('entries').max('id');
+        // const entry = await knex('entries').max('id');
         try {
             for(let i = 0; i < accountLength; i++){
-                const {type, description, value, field} = request.body[i];
+                const {type, description, value, field, entry_id} = request.body[i];
                 var nature = '';
                 if(String(field).toLowerCase().includes('ativo')){
                     nature = 'devedora';
@@ -21,7 +21,8 @@ class AccountController {
                     value,
                     field,
                     nature,
-                    entry_id: entry[0]['max(`id`)']
+                    // entry_id: entry[0]['max(`id`)']
+                    entry_id
                 });
                 accounts.push({
                     'id': id,
@@ -30,7 +31,8 @@ class AccountController {
                     value,
                     field,
                     nature,
-                    entry_id: entry[0]['max(`id`)']
+                    // entry_id: entry[0]['max(`id`)']
+                    entry_id
                 });
             }
             return response.json(accounts);
