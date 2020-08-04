@@ -11,7 +11,7 @@ export async function up(knex: Knex): Promise<void> {
         table.string('field').notNullable();
         table.string('nature');
         
-        table.integer('entry_id').references('id').inTable('entries');
+        table.integer('entry_id').references('id').inTable('entries').notNullable();
 
         table.timestamp('created_at').defaultTo(knex.fn.now());
         table.timestamp('updated_at').defaultTo(knex.fn.now());

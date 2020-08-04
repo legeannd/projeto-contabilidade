@@ -27,6 +27,14 @@ class EntryController {
         return response.json(entries);
     }
 
+    async accountsPerEntry(request: Request, response: Response){
+        const id = request.params.id;
+
+        const accounts = await knex('accounts').select('*').innerJoin('entries','entries.id','accounts.entry_id').where('entries.id',id);
+
+        return response.json(accounts);
+    }
+
     async delete(request: Request, response: Response) {
         const id = request.params.id;
         const entries = await knex('entries').where('id', id).delete();

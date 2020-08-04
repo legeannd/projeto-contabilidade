@@ -16,6 +16,7 @@ routes.delete('/accounts/:id', accountController.delete);
 
 routes.post('/entries', entryController.create);
 routes.get('/entries', entryController.index);
+routes.get('/entries/:id', entryController.accountsPerEntry);
 routes.delete('/entries/:id', entryController.delete);
 
 export default routes;
