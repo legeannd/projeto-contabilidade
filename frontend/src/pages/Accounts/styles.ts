@@ -58,19 +58,14 @@ export const Form = styled.form`
   }
 `;
 
-export const EntryItem = styled.div`
+export const AccountItem = styled.div`
   background: #fff;
   border-radius: 5px;
   width: 700px;
   max-height: 400px;
   overflow-y: auto;
-  text-decoration: none;
-  display: flex;
-  flex-wrap: wrap;
-
-  & + & {
-    margin-top: 20px;
-  }
+  margin-right: 20px;
+  padding: 20px 0 0 40px;
 
   strong {
     margin: 16px 0 0 16px;
@@ -79,18 +74,5 @@ export const EntryItem = styled.div`
 
   p {
     margin: 0 0 16px 16px;
-  }
-
-  button {
-    background: #fff;
-    border: 1px solid black;
-    border-radius: 5px;
-    width: 100%;
-    margin: 20px;
-    transition: background 0.2s;
-
-    &:hover {
-      background: rgba(1, 1, 1, 0.1);
-    }
   }
 `;

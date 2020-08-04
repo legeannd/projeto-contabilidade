@@ -1,87 +1,98 @@
 import React, { useState, useEffect, FormEvent } from 'react';
 
+import { useHistory } from 'react-router-dom';
+
 import api from '../../services/api';
 
-import { Container, Title, Form, Accounts } from './styles';
+import { Container, Title, Form, EntryItem } from './styles';
 
-interface Account {
-  description: string;
-  field: string;
-  id: number;
+interface Entry {
+  id: string;
+  data: string;
+  historic: string;
 }
 
 const Dashboard: React.FC = () => {
-  const [accounts, setAccounts] = useState<Account[]>([]);
-  const [newDescription, setNewDescription] = useState('');
-  const [newField, setNewField] = useState('');
+  const [entries, setEntries] = useState<Entry[]>([]);
+  const [newDate, setNewDate] = useState('');
+  const [newHistoric, setNewHistoric] = useState('');
+
+  const history = useHistory();
 
   useEffect(() => {
-    const loadAccounts = async () => {
-      const response = await api.get('/accounts');
+    const loadEntries = async () => {
+      const response = await api.get('/entries');
 
       if (response.data) {
-        setAccounts(response.data);
+        setEntries(response.data);
       }
     };
 
-    loadAccounts();
+    loadEntries();
   }, []);
 
-  async function handleAddAccount(
+  async function handleAddEntry(
     event: FormEvent<HTMLFormElement>,
   ): Promise<void> {
     event.preventDefault();
 
-    if (newDescription === '' && newField === '') {
+    if (newDate === '' && newHistoric === '') {
       return;
     }
 
-    const newAccount = {
-      description: newDescription,
-      field: newField,
+    const newEntry = {
+      data: newDate,
+      historic: newHistoric,
     };
 
     try {
-      const response = await api.post('/accounts', newAccount);
+      const response = await api.post('/entries', newEntry);
 
-      console.log(response);
+      const entry = response.data;
 
-      const account = response.data;
+      setEntries([...entries, entry]);
 
-      setAccounts([...accounts, account]);
-
-      setNewDescription('');
-      setNewField('');
+      setNewDate('');
+      setNewHistoric('');
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
+  }
+
+  async function goToEntryAccounts(id: string) {
+    history.push('/accounts', { id });
   }
 
   return (
     <Container>
-      <Title>Cadastre uma nova conta</Title>
-      <Form onSubmit={handleAddAccount}>
+      <Title>Crie um novo lançamento</Title>
+      <Form onSubmit={handleAddEntry}>
         <input
-          value={newField}
-          onChange={e => setNewField(e.target.value)}
-          placeholder="Campo"
+          value={newDate}
+          type="date"
+          onChange={e => setNewDate(e.target.value)}
+          placeholder="Data"
         />
         <textarea
-          value={newDescription}
-          onChange={e => setNewDescription(e.target.value)}
-          placeholder="Descrição"
+          value={newHistoric}
+          onChange={e => setNewHistoric(e.target.value)}
+          placeholder="Histórico"
         />
-        <button type="submit">Cadastrar</button>
+        <button type="submit">Criar novo lançamento</button>
       </Form>
 
-      <Accounts>
-        {accounts.map(account => (
-          <div key={account.id}>
-            <strong>{account.field}</strong>
-            <p>{account.description}</p>
-          </div>
+      <EntryItem>
+        {entries.map(entry => (
+          <button
+            key={entry.id}
+            type="button"
+            onClick={() => goToEntryAccounts(entry.id)}
+          >
+            <strong>{entry.data}</strong>
+            <p>{entry.historic}</p>
+          </button>
         ))}
-      </Accounts>
+      </EntryItem>
     </Container>
   );
 };
