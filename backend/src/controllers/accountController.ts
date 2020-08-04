@@ -2,31 +2,38 @@ import knex from '../database/connection';
 import {Request, Response} from 'express';
 class AccountController {
     async create(request: Request, response: Response) {
+        var accounts = [];
+        let accountLength = request.body.length;
+        const entry = await knex('entries').max('id');
         try {
-            const {type, description, value, field} = request.body;
-            var nature = '';
-            if(String(field).toLowerCase().includes('ativo')){
-                nature = 'devedora';
-            } else if (String(field).toLowerCase().includes('passivo') || String(field).toLowerCase().includes('patrimônio líquido')) {
-                nature = 'credora';
+            for(let i = 0; i < accountLength; i++){
+                const {type, description, value, field} = request.body[i];
+                var nature = '';
+                if(String(field).toLowerCase().includes('ativo')){
+                    nature = 'devedora';
+                } else if (String(field).toLowerCase().includes('passivo') || String(field).toLowerCase().includes('patrimônio líquido')) {
+                    nature = 'credora';
+                }
+
+                const [id] = await knex('accounts').insert({
+                    type,
+                    description,
+                    value,
+                    field,
+                    nature,
+                    entry_id: entry[0]['max(`id`)']
+                });
+                accounts.push({
+                    'id': id,
+                    type,
+                    description,
+                    value,
+                    field,
+                    nature,
+                    entry_id: entry[0]['max(`id`)']
+                });
             }
-
-            const [id] = await knex('accounts').insert({
-                type,
-                description,
-                value,
-                field,
-                nature
-            });
-
-            return response.json({
-                'id': id,
-                type,
-                description,
-                value,
-                field,
-                nature
-            });
+            return response.json(accounts);
         } catch (e){
             console.log(e);
         }

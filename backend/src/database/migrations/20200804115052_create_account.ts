@@ -10,6 +10,8 @@ export async function up(knex: Knex): Promise<void> {
         table.float('value').notNullable();
         table.string('field').notNullable();
         table.string('nature');
+        
+        table.integer('entry_id').references('id').inTable('entries');
 
         table.timestamp('created_at').defaultTo(knex.fn.now());
         table.timestamp('updated_at').defaultTo(knex.fn.now());
