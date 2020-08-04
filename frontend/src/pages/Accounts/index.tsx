@@ -60,14 +60,17 @@ const Accounts: React.FC = () => {
       field: newField,
       type: newType,
       value: Number(newValue),
+      entry_id: location.state.id //tinha faltado colocar isso.
     };
 
     try {
-      const response = await api.post('/accounts', newAccount);
+      const response = await api.post('/accounts', [newAccount]); //problema é que vc n tava passando como array como eu ja havia mencionado.
+      const account = response.data; // isso retorna um array de objetos, necessário fazer um map pra adicionar
 
-      const account = response.data;
+      account.map((ac: Account) => {
+        setAccounts([...accounts, ac]);
+      }); //feito o map pra adicionar as contas no array local
 
-      setAccounts([...accounts, account]);
 
       setNewDescription('');
       setNewField('');
@@ -109,8 +112,8 @@ const Accounts: React.FC = () => {
       </Form>
 
       <AccountItem>
-        {accounts.map(account => (
-          <div key={account.id}>
+        {accounts.map((account,i) => (
+          <div key={i}>
             <strong>{account.field}</strong>
             <p>{account.description}</p>
           </div>
