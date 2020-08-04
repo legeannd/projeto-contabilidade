@@ -30,9 +30,20 @@ class EntryController {
     async accountsPerEntry(request: Request, response: Response){
         const id = request.params.id;
 
-        const accounts = await knex('accounts').select('*').innerJoin('entries','entries.id','accounts.entry_id').where('entries.id',id);
+        const accounts = await knex('accounts').select('accounts.*').innerJoin('entries','entries.id','accounts.entry_id').where('entries.id',id);
 
-        return response.json(accounts);
+        const entry = await knex('entries').select('*').where('id',id);
+
+        const result = {
+            id: entry[0].id,
+            data: entry[0].data,
+            historic: entry[0].historic,
+            created_at: entry[0].created_at,
+            updated_at: entry[0].updated_at,
+            accounts
+        }
+
+        return response.json(result);
     }
 
     async delete(request: Request, response: Response) {
