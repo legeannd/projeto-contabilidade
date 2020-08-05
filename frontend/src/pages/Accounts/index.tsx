@@ -1,17 +1,23 @@
 import React, { useState, useEffect, FormEvent } from 'react';
-
-import { useLocation } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import api from '../../services/api';
 
 import { Container, Title, Form, AccountItem } from './styles';
 
 interface Account {
+  id: number;
   type: string;
   description: string;
   value: number;
   field: string;
   nature: string;
+}
+
+interface Entry {
   id: number;
+  data: string;
+  historic: string;
+  accounts: Account[];
 }
 
 interface LocationProps extends Location {
@@ -19,32 +25,30 @@ interface LocationProps extends Location {
 }
 
 const Accounts: React.FC = () => {
+  const [entry, setEntry] = useState<Entry>();
   const [accounts, setAccounts] = useState<Account[]>([]);
   const [newDescription, setNewDescription] = useState('');
   const [newType, setNewType] = useState('');
   const [newValue, setNewValue] = useState('');
   const [newField, setNewField] = useState('');
-  const [entryId, setEntryId] = useState('');
-  const location = useLocation<LocationProps>();
 
+  const { id } = useParams();
   useEffect(() => {
-    const loadAccounts = async () => {
-      let id = '';
+    const loadEntry = async () => {
       try {
-        id = location.state.id;
-        setEntryId(id);
+        const response = await api.get(`/entries/${id}`);
+
+        if (response.data) {
+          setEntry(response.data);
+          setAccounts(response.data.accounts);
+        }
       } catch (err) {
         console.error(err);
       }
-      const response = await api.get(`/entries/${id}`);
-
-      if (response.data) {
-        setAccounts(response.data);
-      }
     };
 
-    loadAccounts();
-  }, [location.state.id]);
+    loadEntry();
+  }, [id]);
 
   async function handleAddAccount(
     event: FormEvent<HTMLFormElement>,
@@ -60,24 +64,19 @@ const Accounts: React.FC = () => {
       field: newField,
       type: newType,
       value: Number(newValue),
-      entry_id: location.state.id //tinha faltado colocar isso.
+      entry_id: id,
     };
 
     try {
-      const response = await api.post('/accounts', [newAccount]); //problema é que vc n tava passando como array como eu ja havia mencionado.
-      const account = response.data; // isso retorna um array de objetos, necessário fazer um map pra adicionar
+      const response = await api.post('/accounts', newAccount);
+      const account = response.data;
 
-      account.map((ac: Account) => {
-        setAccounts([...accounts, ac]);
-      }); //feito o map pra adicionar as contas no array local
-
+      setAccounts([...accounts, account]);
 
       setNewDescription('');
       setNewField('');
       setNewType('');
       setNewValue('');
-
-      console.log(accounts);
     } catch (err) {
       console.error(err);
     }
@@ -85,7 +84,9 @@ const Accounts: React.FC = () => {
 
   return (
     <Container>
-      <Title>Cadastre uma nova conta</Title>
+      <Title>
+        {entry?.data} - {entry?.historic}
+      </Title>
       <Form onSubmit={handleAddAccount}>
         <input
           value={newField}
@@ -112,10 +113,12 @@ const Accounts: React.FC = () => {
       </Form>
 
       <AccountItem>
-        {accounts.map((account,i) => (
-          <div key={i}>
+        {accounts.map(account => (
+          <div key={account.id}>
             <strong>{account.field}</strong>
             <p>{account.description}</p>
+            <p>Natureza {account.nature}</p>
+            <p>Valor: {account.value}</p>
           </div>
         ))}
       </AccountItem>

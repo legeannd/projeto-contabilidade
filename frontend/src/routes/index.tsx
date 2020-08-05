@@ -7,7 +7,7 @@ import Accounts from '../pages/Accounts';
 const Routes: React.FC = () => (
   <Switch>
     <Route path="/" component={Dashboard} exact />
-    <Route path="/accounts" component={Accounts} />
+    <Route path="/accounts/:id" component={Accounts} />
   </Switch>
 );
 

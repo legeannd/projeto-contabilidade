@@ -60,7 +60,7 @@ const Dashboard: React.FC = () => {
   }
 
   async function goToEntryAccounts(id: string) {
-    history.push('/accounts', { id });
+    history.push(`/accounts/${id}`);
   }
 
   return (
