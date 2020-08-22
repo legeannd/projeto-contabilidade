@@ -90,7 +90,6 @@ class AccountController {
             accounts = await knex('accounts').select('*');
         }
 
-        console.log(request.query);
         return response.json(accounts);
     }
 }
