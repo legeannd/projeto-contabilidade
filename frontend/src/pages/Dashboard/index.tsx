@@ -194,11 +194,20 @@ const Dashboard: React.FC = () => {
         <Subtitle>Adicione contas para criar um lançamento:</Subtitle>
 
         <AccountsForm>
-          <textarea
-            value={newDescription}
-            onChange={e => setNewDescription(e.target.value)}
-            placeholder="Descrição"
-          />
+          <div className="text-inputs">
+            <textarea
+              value={newDescription}
+              onChange={e => setNewDescription(e.target.value)}
+              placeholder="Descrição"
+            />
+            <input
+              value={newValue}
+              type="number"
+              step="0.1"
+              onChange={e => setNewValue(e.target.value)}
+              placeholder="Valor"
+            />
+          </div>
           <div>
             <Select
               name="field"
@@ -237,13 +246,6 @@ const Dashboard: React.FC = () => {
                 { value: 'Credora', label: 'Credora' },
                 { value: 'Devedora', label: 'Devedora' },
               ]}
-            />
-            <input
-              value={newValue}
-              type="number"
-              step="0.1"
-              onChange={e => setNewValue(e.target.value)}
-              placeholder="Valor"
             />
             <button onClick={handleAddAccount} type="button">
               Adicionar conta

@@ -18,7 +18,7 @@ export const Title = styled.h1`
 export const Subtitle = styled.h2`
   margin-top: 50px;
   font-weight: normal;
-  font-size: 24px;
+  font-size: 20px;
   width: 100%;
 `;
 
@@ -37,9 +37,9 @@ export const SearchField = styled.div`
   input {
     width: 75%;
     height: 60%;
-    font-size: 24px;
+    font-size: 20px;
     padding-left: 16px;
-    border: 0;
+    border: 1px solid transparent;
     border-radius: 5px;
 
     &:focus {
@@ -50,9 +50,9 @@ export const SearchField = styled.div`
   button {
     width: 20%;
     height: 60%;
-    border: 0;
+    border: 1px solid transparent;
     border-radius: 5px;
-    font-size: 24px;
+    font-size: 20px;
     background: #4030f0;
     color: #fff;
     transition: opacity 0.2s;
@@ -78,9 +78,9 @@ export const EntryForm = styled.form`
 
   input {
     height: 60px;
-    font-size: 24px;
+    font-size: 20px;
     padding-left: 16px;
-    border: 0;
+    border: 1px solid transparent;
     border-radius: 5px;
 
     &:focus {
@@ -91,10 +91,10 @@ export const EntryForm = styled.form`
   textarea {
     width: 60%;
     height: 140px;
-    font-size: 24px;
+    font-size: 20px;
     font-family: Roboto, sans-serif;
     padding: 16px 0 0 16px;
-    border: 0;
+    border: 1px solid transparent;
     border-radius: 5px;
     resize: none;
 
@@ -109,9 +109,9 @@ export const EntryForm = styled.form`
 
   button {
     height: 60px;
-    border: 0;
+    border: 1px solid transparent;
     border-radius: 5px;
-    font-size: 24px;
+    font-size: 20px;
     background: #4030f0;
     color: #fff;
     transition: opacity 0.2s;
@@ -127,19 +127,29 @@ export const AccountsForm = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  height: 320px;
 
   div {
     width: 35%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    div {
+      width: 100%;
+    }
+  }
+
+  .text-inputs {
+    width: 60%;
   }
 
   input {
+    width: 100%;
     height: 60px;
-    font-size: 24px;
+    font-size: 20px;
     padding-left: 16px;
-    border: 0;
+    border: 1px solid transparent;
     border-radius: 5px;
 
     &:focus {
@@ -148,12 +158,11 @@ export const AccountsForm = styled.div`
   }
 
   textarea {
-    width: 60%;
-    height: 320px;
-    font-size: 24px;
+    height: 70%;
+    font-size: 20px;
     font-family: Roboto, sans-serif;
     padding: 16px 0 0 16px;
-    border: 0;
+    border: 1px solid transparent;
     border-radius: 5px;
     resize: none;
 
@@ -168,9 +177,9 @@ export const AccountsForm = styled.div`
 
   button {
     height: 60px;
-    border: 0;
+    border: 1px solid transparent;
     border-radius: 5px;
-    font-size: 24px;
+    font-size: 20px;
     background: #4030f0;
     color: #fff;
     transition: opacity 0.2s;
