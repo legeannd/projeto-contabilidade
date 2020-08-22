@@ -6,13 +6,13 @@ class AccountController {
         // let accountLength = request.body.length;
         // const entry = await knex('entries').max('id');
         try {
-            const { type, description, value, field, entry_id } = request.body;
-            var nature = '';
-            if (String(field).toLowerCase().includes('ativo')) {
-                nature = 'devedora';
-            } else if (String(field).toLowerCase().includes('passivo') || String(field).toLowerCase().includes('patrimônio líquido')) {
-                nature = 'credora';
-            }
+            const { type, description, value, field, nature, entry_id } = request.body;
+            // var nature = '';
+            // if (String(field).toLowerCase().includes('ativo')) {
+            //     nature = 'devedora';
+            // } else if (String(field).toLowerCase().includes('passivo') || String(field).toLowerCase().includes('patrimônio líquido')) {
+            //     nature = 'credora';
+            // }
 
             const [id] = await knex('accounts').insert({
                 type,
@@ -70,8 +70,18 @@ class AccountController {
     }
 
     async index(request: Request, response: Response) {
-        const accounts = await knex('accounts').select('*');
+        var accounts;
+        if(request.query.description && request.query.field) {
+            accounts = (await knex('accounts').select('*').whereRaw('`accounts`.`field` = ?',[String(request.query.field).toUpperCase()])).filter((account) => String(account["description"]).includes(String(request.query.description)));
+        } else if (request.query.description) {
+            accounts = (await knex('accounts').select('*')).filter((account) => String(account["description"]).includes(String(request.query.description)));
+        } else if (request.query.field) {
+            accounts = await knex('accounts').select('*').where('field','=',String(request.query.field).toUpperCase());
+        } else {
+            accounts = await knex('accounts').select('*');
+        }
 
+        console.log(request.query);
         return response.json(accounts);
     }
 }
