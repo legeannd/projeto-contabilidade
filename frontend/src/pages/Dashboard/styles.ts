@@ -191,7 +191,6 @@ export const AccountsForm = styled.div`
 `;
 
 export const AccountsCreated = styled.div`
-  margin-top: 30px;
   width: 100%;
   max-height: 800px;
   overflow-y: auto;
@@ -238,7 +237,32 @@ export const AccountsCreated = styled.div`
   }
 `;
 
-export const Entries = styled.div``;
+export const Entries = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+
+  .entry {
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .historic {
+    height: 100px;
+  }
+
+  .historic,
+  .date {
+    font-size: 16px;
+    width: 50%;
+    overflow-x: auto;
+    span {
+      font-size: 20px;
+    }
+  }
+`;
 
 export const NoData = styled.p`
   width: 100%;

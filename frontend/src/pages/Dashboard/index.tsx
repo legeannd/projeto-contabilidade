@@ -108,8 +108,8 @@ const Dashboard: React.FC = () => {
     };
 
     try {
-      /* const response = await api.post('/entries', newEntry); */
-      /* console.log(response.data); */
+      const response = await api.post('/entries', newEntry);
+      console.log(response.data);
       setEntries([...entries, newEntry]);
       setAccountsCreated([]);
       setNewDate('');
@@ -137,10 +137,10 @@ const Dashboard: React.FC = () => {
             <Subtitle>Lançamentos criados: </Subtitle>
             {entries.map(entry => (
               <div className="entry">
-                <span>
-                  Histórico: <span>{entry.historic}</span>
+                <span className="historic">
+                  Histórico do lançamento: <span>{entry.historic}</span>
                 </span>
-                <span>
+                <span className="date">
                   Data: <span>{entry.date}</span>
                 </span>
                 <span>Contas do lançamento:</span>
