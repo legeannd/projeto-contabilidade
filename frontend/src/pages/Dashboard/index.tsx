@@ -46,7 +46,7 @@ const Dashboard: React.FC = () => {
   const [newDescription, setNewDescription] = useState('');
 
   useEffect(() => {
-    /* const loadEntries = async () => {
+    const loadEntries = async () => {
       const response = await api.get('/entries');
 
       if (response.data) {
@@ -54,7 +54,7 @@ const Dashboard: React.FC = () => {
       }
     };
 
-    loadEntries(); */
+    loadEntries();
   }, []);
 
   const handleAddAccount = useCallback(() => {
@@ -78,14 +78,14 @@ const Dashboard: React.FC = () => {
     };
 
     const newAccounts = [...accountsCreated, account];
-    setAccountsCreated(newAccounts);
 
+    setAccountsCreated(newAccounts);
     setNewType('');
     setNewNature('');
     setNewField('');
     setNewValue('');
     setNewDescription('');
-  }, [accountsCreated, newDescription, newField, newType, newValue]);
+  }, [accountsCreated, newDescription, newField, newNature, newType, newValue]);
 
   async function handleAddEntry(
     event: FormEvent<HTMLFormElement>,
@@ -107,12 +107,16 @@ const Dashboard: React.FC = () => {
       accounts: accountsCreated,
     };
 
-    console.log(newEntry);
-
-    setEntries([...entries, newEntry]);
-    setAccountsCreated([]);
-    setNewDate('');
-    setNewHistoric('');
+    try {
+      /* const response = await api.post('/entries', newEntry); */
+      /* console.log(response.data); */
+      setEntries([...entries, newEntry]);
+      setAccountsCreated([]);
+      setNewDate('');
+      setNewHistoric('');
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   return (

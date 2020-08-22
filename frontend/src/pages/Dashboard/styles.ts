@@ -19,6 +19,7 @@ export const Subtitle = styled.h2`
   margin-top: 50px;
   font-weight: normal;
   font-size: 24px;
+  width: 100%;
 `;
 
 export const Body = styled.div`
@@ -182,14 +183,19 @@ export const AccountsForm = styled.div`
 
 export const AccountsCreated = styled.div`
   margin-top: 30px;
+  width: 100%;
   max-height: 800px;
   overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 
   .account {
+    width: 550px;
     height: 200px;
     display: flex;
-    margin: 10px 0;
     flex-wrap: wrap;
+    margin: 10px 10px 0 0;
     background: #a0d0f5;
     color: #000;
     border-radius: 5px;
@@ -197,28 +203,29 @@ export const AccountsCreated = styled.div`
 
     div {
       display: flex;
-      width: 35%;
+      width: 40%;
       flex-direction: column;
       justify-content: space-between;
       margin-top: 10px;
-      margin-right: 20px;
+      margin-right: 0px;
       justify-content: space-between;
     }
   }
 
   span {
-    font-size: 20px;
-    height: 50px;
+    font-size: 16px;
+    height: 30px;
 
     span {
-      font-size: 24px;
+      font-size: 20px;
     }
   }
 
   .description {
     height: 100%;
-    width: 60%;
-    padding: 10px;
+    width: 55%;
+    padding: 10px 20px 0 10px;
+    overflow-x: auto;
   }
 `;
 
