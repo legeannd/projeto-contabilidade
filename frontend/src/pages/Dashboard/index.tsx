@@ -102,6 +102,9 @@ const Dashboard: React.FC = () => {
     };
 
     setEntries([...entries, newEntry]);
+    setAccountsCreated([]);
+    setNewDate('');
+    setNewHistoric('');
   }
 
   return (
@@ -119,8 +122,37 @@ const Dashboard: React.FC = () => {
         </SearchField>
         {entries.length ? (
           <Entries>
+            <Subtitle>Lançamentos criados: </Subtitle>
             {entries.map(entry => (
-              <p>aqui</p>
+              <div className="entry">
+                <span>
+                  Histórico: <span>{entry.historic}</span>
+                </span>
+                <span>
+                  Data: <span>{entry.date}</span>
+                </span>
+                <span>Contas do lançamento:</span>
+                <AccountsCreated>
+                  {entry.accounts.map(account => (
+                    <div className="account">
+                      <span className="description">
+                        Descrição: <span>{account.description}</span>
+                      </span>
+                      <div>
+                        <span className="field">
+                          Campo: <span>{account.field}</span>
+                        </span>
+                        <span className="type">
+                          Tipo: <span>{account.type}</span>
+                        </span>
+                        <span className="value">
+                          Valor: <span>{formatValue(account.value)}</span>
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </AccountsCreated>
+              </div>
             ))}
           </Entries>
         ) : (
