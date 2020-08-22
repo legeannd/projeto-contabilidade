@@ -197,10 +197,12 @@ export const AccountsCreated = styled.div`
 
     div {
       display: flex;
+      width: 35%;
       flex-direction: column;
       justify-content: space-between;
       margin-top: 10px;
       margin-right: 20px;
+      justify-content: space-between;
     }
   }
 
