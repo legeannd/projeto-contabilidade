@@ -16,6 +16,7 @@ import {
   AccountsForm,
   AccountsCreated,
 } from './styles';
+import Select from '../../components/Select';
 
 interface Entry {
   date: string;
@@ -39,6 +40,7 @@ const Dashboard: React.FC = () => {
   const [accountsCreated, setAccountsCreated] = useState<Account[]>([]);
   const [newField, setNewField] = useState('');
   const [newType, setNewType] = useState('');
+  const [newNature, setNewNature] = useState('');
   const [newValue, setNewValue] = useState('');
   const [newDescription, setNewDescription] = useState('');
 
@@ -100,6 +102,8 @@ const Dashboard: React.FC = () => {
       historic: newHistoric,
       accounts: accountsCreated,
     };
+
+    console.log(newEntry);
 
     setEntries([...entries, newEntry]);
     setAccountsCreated([]);
@@ -185,15 +189,43 @@ const Dashboard: React.FC = () => {
             placeholder="Descrição"
           />
           <div>
-            <input
+            <Select
+              name="field"
+              label="Campo"
               value={newField}
-              onChange={e => setNewField(e.target.value)}
-              placeholder="Campo"
+              onChange={e => {
+                setNewField(e.target.value);
+              }}
+              options={[
+                { value: 'ATIVO', label: 'Ativo' },
+                { value: 'PASSIVO', label: 'Passivo' },
+                { value: 'RECEITAS', label: 'Receitas' },
+                { value: 'DESPESAS', label: 'Despesas' },
+              ]}
             />
-            <input
+            <Select
+              name="type"
+              label="Tipo"
               value={newType}
-              onChange={e => setNewType(e.target.value)}
-              placeholder="Tipo"
+              onChange={e => {
+                setNewType(e.target.value);
+              }}
+              options={[
+                { value: 'C', label: 'Crédito' },
+                { value: 'D', label: 'Débito' },
+              ]}
+            />
+            <Select
+              name="nature"
+              label="Natureza"
+              value={newNature}
+              onChange={e => {
+                setNewNature(e.target.value);
+              }}
+              options={[
+                { value: 'Credora', label: 'Credora' },
+                { value: 'Devedora', label: 'Devedora' },
+              ]}
             />
             <input
               value={newValue}
@@ -211,8 +243,8 @@ const Dashboard: React.FC = () => {
           <AccountsCreated>
             <Subtitle>Contas a serem adicionadas ao lançamento atual:</Subtitle>
 
-            {accountsCreated.map(account => (
-              <div className="account">
+            {accountsCreated.map((account, index) => (
+              <div key={index} className="account">
                 <span className="description">
                   Descrição: <span>{account.description}</span>
                 </span>
