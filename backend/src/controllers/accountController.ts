@@ -72,11 +72,17 @@ class AccountController {
     async index(request: Request, response: Response) {
         var accounts;
         if(request.query.description && request.query.field) {
-            accounts = (await knex('accounts').select('*').whereRaw('`accounts`.`field` = ?',[String(request.query.field).toUpperCase()])).filter((account) => String(account["description"]).includes(String(request.query.description)));
+            accounts = (await knex('accounts')
+                .select('*')
+                .whereRaw('`accounts`.`field` = ?',[String(request.query.field).toUpperCase()]))
+                .filter((account) => String(account["description"]).includes(String(request.query.description)));
         } else if (request.query.description) {
-            accounts = (await knex('accounts').select('*')).filter((account) => String(account["description"]).includes(String(request.query.description)));
+            accounts = (await knex('accounts').select('*'))
+                .filter((account) => String(account["description"]).includes(String(request.query.description)));
         } else if (request.query.field) {
-            accounts = await knex('accounts').select('*').where('field','=',String(request.query.field).toUpperCase());
+            accounts = await knex('accounts')
+                .select('*')
+                .where('field','=',String(request.query.field).toUpperCase());
         } else {
             accounts = await knex('accounts').select('*');
         }
