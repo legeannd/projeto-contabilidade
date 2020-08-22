@@ -25,10 +25,11 @@ interface Entry {
 }
 
 interface Account {
-  type: string;
   description: string;
-  value: number;
+  type: string;
+  nature: string;
   field: string;
+  value: number;
 }
 
 const Dashboard: React.FC = () => {
@@ -59,6 +60,7 @@ const Dashboard: React.FC = () => {
   const handleAddAccount = useCallback(() => {
     if (
       newType === '' ||
+      newNature === '' ||
       newDescription === '' ||
       newValue === '' ||
       newField === ''
@@ -69,6 +71,7 @@ const Dashboard: React.FC = () => {
 
     const account = {
       type: newType,
+      nature: newNature,
       description: newDescription,
       value: Number(newValue),
       field: newField,
@@ -78,6 +81,7 @@ const Dashboard: React.FC = () => {
     setAccountsCreated(newAccounts);
 
     setNewType('');
+    setNewNature('');
     setNewField('');
     setNewValue('');
     setNewDescription('');
@@ -148,6 +152,9 @@ const Dashboard: React.FC = () => {
                         </span>
                         <span className="type">
                           Tipo: <span>{account.type}</span>
+                        </span>
+                        <span className="nature">
+                          Natureza: <span>{account.nature}</span>
                         </span>
                         <span className="value">
                           Valor: <span>{formatValue(account.value)}</span>
@@ -254,6 +261,9 @@ const Dashboard: React.FC = () => {
                   </span>
                   <span className="type">
                     Tipo: <span>{account.type}</span>
+                  </span>
+                  <span className="nature">
+                    Natureza: <span>{account.nature}</span>
                   </span>
                   <span className="value">
                     Valor: <span>{formatValue(account.value)}</span>

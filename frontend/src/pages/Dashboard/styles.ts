@@ -186,7 +186,7 @@ export const AccountsCreated = styled.div`
   overflow-y: auto;
 
   .account {
-    height: 180px;
+    height: 200px;
     display: flex;
     margin: 10px 0;
     flex-wrap: wrap;
