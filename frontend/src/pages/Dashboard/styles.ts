@@ -1,96 +1,231 @@
 import styled from 'styled-components';
 
 export const Container = styled.div`
-  background: #f0f0f0;
-  margin-top: 50px;
+  margin: 50px 0;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  flex-wrap: wrap;
 `;
 
 export const Title = styled.h1`
-  font-size: 48px;
-  color: #000;
-  line-height: 56px;
   text-align: center;
+  font-size: 48px;
+  margin-bottom: 30px;
   width: 100%;
-  margin-bottom: 50px;
-  flex-shrink: 0;
 `;
 
-export const Form = styled.form`
-  max-width: 600px;
+export const Subtitle = styled.h2`
+  margin-top: 50px;
+  font-weight: normal;
+  font-size: 24px;
+`;
+
+export const Body = styled.div`
+  max-width: 1120px;
+  width: 100%;
+`;
+
+export const SearchField = styled.div`
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100px;
+
+  input {
+    width: 75%;
+    height: 60%;
+    font-size: 24px;
+    padding-left: 16px;
+    border: 0;
+    border-radius: 5px;
+
+    &:focus {
+      border: 1px solid #4030f0;
+    }
+  }
+
+  button {
+    width: 20%;
+    height: 60%;
+    border: 0;
+    border-radius: 5px;
+    font-size: 24px;
+    background: #4030f0;
+    color: #fff;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+`;
+
+export const EntryForm = styled.form`
+  margin-top: 50px;
   display: flex;
   flex-wrap: wrap;
-  margin-left: 20px;
+  justify-content: space-between;
 
-  input,
-  textarea {
-    width: 600px;
-    background: #fff;
-    padding: 16px;
-    border: 0px;
+  div {
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  input {
+    height: 60px;
+    font-size: 24px;
+    padding-left: 16px;
+    border: 0;
     border-radius: 5px;
+
+    &:focus {
+      border: 1px solid #4030f0;
+    }
   }
 
   textarea {
-    margin-top: 20px;
+    width: 60%;
+    height: 140px;
+    font-size: 24px;
     font-family: Roboto, sans-serif;
-    font-size: 16px;
+    padding: 16px 0 0 16px;
+    border: 0;
+    border-radius: 5px;
     resize: none;
-    height: 100px;
+
+    &:focus {
+      border: 1px solid #4030f0;
+    }
+
+    &::placeholder {
+      font-family: Roboto, sans-serif;
+    }
   }
 
   button {
-    margin-top: 20px;
-    width: 200px;
-    background: #11ff90;
-    color: #000;
-    padding: 16px;
-    border: 0px;
+    height: 60px;
+    border: 0;
     border-radius: 5px;
-    transition: background 0.2s;
+    font-size: 24px;
+    background: #4030f0;
+    color: #fff;
+    transition: opacity 0.2s;
 
     &:hover {
-      background: #11a080;
+      opacity: 0.8;
     }
   }
 `;
 
-export const EntryItem = styled.div`
-  background: #fff;
-  border-radius: 5px;
-  width: 700px;
-  max-height: 400px;
-  overflow-y: auto;
-  text-decoration: none;
+export const AccountsForm = styled.div`
+  margin-top: 20px;
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
 
-  & + & {
-    margin-top: 20px;
+  div {
+    width: 35%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
   }
 
-  strong {
-    margin: 16px 0 0 16px;
-    font-size: 32px;
+  input {
+    height: 60px;
+    font-size: 24px;
+    padding-left: 16px;
+    border: 0;
+    border-radius: 5px;
+
+    &:focus {
+      border: 1px solid #4030f0;
+    }
   }
 
-  p {
-    margin: 0 0 16px 16px;
+  textarea {
+    width: 60%;
+    height: 320px;
+    font-size: 24px;
+    font-family: Roboto, sans-serif;
+    padding: 16px 0 0 16px;
+    border: 0;
+    border-radius: 5px;
+    resize: none;
+
+    &:focus {
+      border: 1px solid #4030f0;
+    }
+
+    &::placeholder {
+      font-family: Roboto, sans-serif;
+    }
   }
 
   button {
-    background: #fff;
-    border: 1px solid black;
+    height: 60px;
+    border: 0;
     border-radius: 5px;
-    width: 100%;
-    margin: 20px;
-    transition: background 0.2s;
+    font-size: 24px;
+    background: #4030f0;
+    color: #fff;
+    transition: opacity 0.2s;
 
     &:hover {
-      background: rgba(1, 1, 1, 0.1);
+      opacity: 0.8;
     }
   }
+`;
+
+export const AccountsCreated = styled.div`
+  margin-top: 30px;
+  max-height: 800px;
+  overflow-y: auto;
+
+  .account {
+    height: 180px;
+    display: flex;
+    margin: 10px 0;
+    flex-wrap: wrap;
+    background: #a0d0f5;
+    color: #000;
+    border-radius: 5px;
+    justify-content: space-between;
+
+    div {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      margin-top: 10px;
+      margin-right: 20px;
+    }
+  }
+
+  span {
+    font-size: 20px;
+    height: 50px;
+
+    span {
+      font-size: 24px;
+    }
+  }
+
+  .description {
+    height: 100%;
+    width: 60%;
+    padding: 10px;
+  }
+`;
+
+export const Entries = styled.div``;
+
+export const NoData = styled.p`
+  width: 100%;
+  margin: 30px 0;
+  color: #222222;
+  font-size: 32px;
+  text-align: center;
 `;
