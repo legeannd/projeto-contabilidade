@@ -90,6 +90,8 @@ class AccountController {
             accounts = await knex('accounts').select('*');
         }
 
+        
+
         return response.json(accounts);
     }
 }

@@ -24,18 +24,27 @@ class EntryController {
     async index(request: Request, response: Response) {
         const entriesWithAccounts: any[] = [];
         const entries = await knex('entries').select('*');
+
+        const {description} = request.query;
         
         for (let i = 0; i < entries.length; i ++) {
-            const account = await knex('accounts').select('accounts.*').innerJoin('entries','entries.id','accounts.entry_id').where('accounts.entry_id','=',entries[i].id);
+            let account = [];
+            if(description){
+                account = (await knex('accounts').select('accounts.*').innerJoin('entries','entries.id','accounts.entry_id').where('accounts.entry_id','=',entries[i].id)).filter((value) => String(value.description).includes(String(description)));
+            }else{
+                account = await knex('accounts').select('accounts.*').innerJoin('entries','entries.id','accounts.entry_id').where('accounts.entry_id','=',entries[i].id);
+            }
 
-            entriesWithAccounts.push({
-                id: entries[i].id,
-                data: entries[i].data,
-                historic: entries[i].historic,
-                created_at: entries[i].created_at,
-                updated_at: entries[i].updated_at,
-                accounts: account
-            });
+            if(account.length != 0){
+                entriesWithAccounts.push({
+                    id: entries[i].id,
+                    data: entries[i].data,
+                    historic: entries[i].historic,
+                    created_at: entries[i].created_at,
+                    updated_at: entries[i].updated_at,
+                    accounts: account
+                });
+            }
         }
 
         return response.json(entriesWithAccounts);
