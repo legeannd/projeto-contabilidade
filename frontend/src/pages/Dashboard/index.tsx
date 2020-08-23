@@ -17,14 +17,31 @@ import {
   AccountsCreated,
 } from './styles';
 import Select from '../../components/Select';
+import AccountItems from '../../components/AccountItem';
 
 interface Entry {
-  date: string;
+  id: string;
+  data: string;
   historic: string;
   accounts: Array<Account>;
 }
 
+interface EntryCreated {
+  id: string;
+  data: string;
+  historic: string;
+}
+
+interface AccountCreated {
+  description: string;
+  type: string;
+  nature: string;
+  field: string;
+  value: number;
+}
+
 interface Account {
+  id: string;
   description: string;
   type: string;
   nature: string;
@@ -38,7 +55,7 @@ const Dashboard: React.FC = () => {
   const [newHistoric, setNewHistoric] = useState('');
   const [newSearch, setNewSearch] = useState('');
 
-  const [accountsCreated, setAccountsCreated] = useState<Account[]>([]);
+  const [accountsCreated, setAccountsCreated] = useState<AccountCreated[]>([]);
   const [newField, setNewField] = useState('');
   const [newType, setNewType] = useState('');
   const [newNature, setNewNature] = useState('');
@@ -48,9 +65,9 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     const loadEntries = async () => {
       const response = await api.get('/entries');
-
       if (response.data) {
-        setEntries(response.data);
+        const entriesReceived: Entry[] = response.data;
+        setEntries(entriesReceived);
       }
     };
 
@@ -102,18 +119,36 @@ const Dashboard: React.FC = () => {
     }
 
     const newEntry = {
-      date: newDate,
+      data: newDate,
       historic: newHistoric,
-      accounts: accountsCreated,
     };
 
     try {
       const response = await api.post('/entries', newEntry);
-      console.log(response.data);
-      setEntries([...entries, newEntry]);
+      const entryCreated: EntryCreated = response.data;
+      const accountResponse = await api.post('/accounts', accountsCreated);
+      const accountCreated: Account[] = accountResponse.data;
+      const entryWithAccount = {
+        ...entryCreated,
+        accounts: accountCreated,
+      };
+
+      setEntries([...entries, entryWithAccount]);
       setAccountsCreated([]);
       setNewDate('');
       setNewHistoric('');
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
+  async function handleSearchAccountsPerEntry(): Promise<void> {
+    if (newSearch === '') {
+      return;
+    }
+    try {
+      const response = await api.get(`/accounts?description=${newSearch}`);
+      console.log(response.data);
     } catch (err) {
       console.error(err);
     }
@@ -128,45 +163,25 @@ const Dashboard: React.FC = () => {
             value={newSearch}
             type="text"
             onChange={e => setNewSearch(e.target.value)}
-            placeholder="Faça uma busca nos lançamentos"
+            placeholder="Faça uma busca por descrição"
           />
-          <button type="button">Buscar</button>
+          <button onClick={handleSearchAccountsPerEntry} type="button">
+            Buscar
+          </button>
         </SearchField>
         {entries.length ? (
           <Entries>
             <Subtitle>Lançamentos criados: </Subtitle>
-            {entries.map(entry => (
-              <div className="entry">
+            {entries.map(({ id, historic, data, accounts }) => (
+              <div key={id} className="entry">
                 <span className="historic">
-                  Histórico do lançamento: <span>{entry.historic}</span>
+                  Histórico do lançamento: <span>{historic}</span>
                 </span>
                 <span className="date">
-                  Data: <span>{entry.date}</span>
+                  Data: <span>{data}</span>
                 </span>
                 <span>Contas do lançamento:</span>
-                <AccountsCreated>
-                  {entry.accounts.map(account => (
-                    <div className="account">
-                      <span className="description">
-                        Descrição: <span>{account.description}</span>
-                      </span>
-                      <div>
-                        <span className="field">
-                          Campo: <span>{account.field}</span>
-                        </span>
-                        <span className="type">
-                          Tipo: <span>{account.type}</span>
-                        </span>
-                        <span className="nature">
-                          Natureza: <span>{account.nature}</span>
-                        </span>
-                        <span className="value">
-                          Valor: <span>{formatValue(account.value)}</span>
-                        </span>
-                      </div>
-                    </div>
-                  ))}
-                </AccountsCreated>
+                {accounts && <AccountItems accounts={accounts} />}
               </div>
             ))}
           </Entries>
