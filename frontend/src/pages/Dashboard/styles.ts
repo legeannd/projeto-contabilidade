@@ -199,7 +199,7 @@ export const AccountsCreated = styled.div`
   justify-content: space-between;
 
   .account {
-    width: 550px;
+    width: 540px;
     height: 200px;
     display: flex;
     flex-wrap: wrap;
