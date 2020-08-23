@@ -54,6 +54,7 @@ const Dashboard: React.FC = () => {
   const [newDate, setNewDate] = useState('');
   const [newHistoric, setNewHistoric] = useState('');
   const [newSearch, setNewSearch] = useState('');
+  const [noData, setNoData] = useState(false);
 
   const [accountsCreated, setAccountsCreated] = useState<AccountCreated[]>([]);
   const [newField, setNewField] = useState('');
@@ -69,6 +70,7 @@ const Dashboard: React.FC = () => {
         const entriesReceived: Entry[] = response.data;
         setEntries(entriesReceived);
       }
+      setNoData(false);
     };
 
     loadEntries();
@@ -143,12 +145,15 @@ const Dashboard: React.FC = () => {
   }
 
   async function handleSearchAccountsPerEntry(): Promise<void> {
-    if (newSearch === '') {
-      return;
-    }
     try {
-      const response = await api.get(`/accounts?description=${newSearch}`);
-      console.log(response.data);
+      const response = await api.get(`/entries?description=${newSearch}`);
+      if (response.data.length) {
+        setEntries(response.data);
+        setNoData(false);
+      } else {
+        setNoData(true);
+        setEntries([]);
+      }
     } catch (err) {
       console.error(err);
     }
@@ -169,6 +174,7 @@ const Dashboard: React.FC = () => {
             Buscar
           </button>
         </SearchField>
+        {noData && <NoData>Nenhum resultado econtrado</NoData>}
         {entries.length ? (
           <Entries>
             <Subtitle>Lançamentos criados: </Subtitle>
