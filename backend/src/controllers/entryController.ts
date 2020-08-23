@@ -22,9 +22,25 @@ class EntryController {
     }
 
     async index(request: Request, response: Response) {
+        const entriesWithAccounts: any[] = [];
         const entries = await knex('entries').select('*');
+        
+        for (let i = 0; i < entries.length; i ++) {
+            const account = await knex('accounts').select('accounts.*').innerJoin('entries','entries.id','accounts.entry_id').where('accounts.entry_id','=',entries[i].id);
 
-        return response.json(entries);
+            entriesWithAccounts.push({
+                id: entries[i].id,
+                data: entries[i].data,
+                historic: entries[i].historic,
+                created_at: entries[i].created_at,
+                updated_at: entries[i].updated_at,
+                accounts: account
+            });
+        }
+
+        console.log(entriesWithAccounts);
+
+        return response.json(entriesWithAccounts);
     }
 
     async accountsPerEntry(request: Request, response: Response){
