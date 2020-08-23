@@ -159,6 +159,16 @@ const Dashboard: React.FC = () => {
     }
   }
 
+  async function handleDeleteEntry(id: string) {
+    try {
+      await api.delete(`/entries/${id}`);
+      const entriesUpdated = entries.filter(entry => entry.id !== id);
+      setEntries(entriesUpdated);
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   return (
     <Container>
       <Title>Sistema de lançamentos</Title>
@@ -183,9 +193,14 @@ const Dashboard: React.FC = () => {
                 <span className="historic">
                   Histórico do lançamento: <span>{historic}</span>
                 </span>
-                <span className="date">
-                  Data: <span>{data}</span>
-                </span>
+                <div className="button-block">
+                  <span className="date">
+                    Data: <span>{data}</span>
+                  </span>
+                  <button type="button" onClick={() => handleDeleteEntry(id)}>
+                    Excluir histórico
+                  </button>
+                </div>
                 <span>Contas do lançamento:</span>
                 {accounts && <AccountItems accounts={accounts} />}
               </div>

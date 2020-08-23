@@ -262,6 +262,27 @@ export const Entries = styled.div`
       font-size: 20px;
     }
   }
+
+  .button-block {
+    display: flex;
+    flex-wrap: wrap;
+    width: 50%;
+
+    button {
+      width: 50%;
+      height: 60px;
+      border: 1px solid transparent;
+      border-radius: 5px;
+      font-size: 20px;
+      background: #4030f0;
+      color: #fff;
+      transition: opacity 0.2s;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
 `;
 
 export const NoData = styled.p`
