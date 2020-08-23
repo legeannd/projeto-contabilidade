@@ -38,8 +38,6 @@ class EntryController {
             });
         }
 
-        console.log(entriesWithAccounts);
-
         return response.json(entriesWithAccounts);
     }
 
