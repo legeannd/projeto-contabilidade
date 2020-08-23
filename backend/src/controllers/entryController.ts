@@ -44,7 +44,12 @@ class EntryController {
                     updated_at: entries[i].updated_at,
                     accounts: account
                 });
-            }else {
+            } else if(account.length == 0){
+                return response.json({
+                    message: 'Nenhum registro encontrado!'
+                })
+            }
+            else {
                 entriesWithAccounts.push({
                     id: entries[i].id,
                     data: entries[i].data,
