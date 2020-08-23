@@ -35,7 +35,16 @@ class EntryController {
                 account = await knex('accounts').select('accounts.*').innerJoin('entries','entries.id','accounts.entry_id').where('accounts.entry_id','=',entries[i].id);
             }
 
-            if(account.length != 0){
+            if(account.length != 0 && description){
+                entriesWithAccounts.push({
+                    id: entries[i].id,
+                    data: entries[i].data,
+                    historic: entries[i].historic,
+                    created_at: entries[i].created_at,
+                    updated_at: entries[i].updated_at,
+                    accounts: account
+                });
+            }else {
                 entriesWithAccounts.push({
                     id: entries[i].id,
                     data: entries[i].data,
