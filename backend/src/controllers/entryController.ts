@@ -44,12 +44,7 @@ class EntryController {
                     updated_at: entries[i].updated_at,
                     accounts: account
                 });
-            } else if(account.length == 0){
-                return response.json({
-                    message: 'Nenhum registro encontrado!'
-                })
-            }
-            else {
+            }else if(account.length != 0) {
                 entriesWithAccounts.push({
                     id: entries[i].id,
                     data: entries[i].data,
@@ -60,8 +55,12 @@ class EntryController {
                 });
             }
         }
-
-        return response.json(entriesWithAccounts);
+        if(entriesWithAccounts.length != 0) {
+            return response.json(entriesWithAccounts);
+        }
+        return response.json({
+            message: 'Registro não encontrado!'
+        });
     }
 
     async accountsPerEntry(request: Request, response: Response){
