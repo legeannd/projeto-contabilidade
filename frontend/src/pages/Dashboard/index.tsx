@@ -16,6 +16,7 @@ import {
   AccountsForm,
   AccountsCreated,
 } from './styles';
+import Select from '../../components/Select';
 
 interface Entry {
   date: string;
@@ -24,10 +25,11 @@ interface Entry {
 }
 
 interface Account {
-  type: string;
   description: string;
-  value: number;
+  type: string;
+  nature: string;
   field: string;
+  value: number;
 }
 
 const Dashboard: React.FC = () => {
@@ -39,11 +41,12 @@ const Dashboard: React.FC = () => {
   const [accountsCreated, setAccountsCreated] = useState<Account[]>([]);
   const [newField, setNewField] = useState('');
   const [newType, setNewType] = useState('');
+  const [newNature, setNewNature] = useState('');
   const [newValue, setNewValue] = useState('');
   const [newDescription, setNewDescription] = useState('');
 
   useEffect(() => {
-    /* const loadEntries = async () => {
+    const loadEntries = async () => {
       const response = await api.get('/entries');
 
       if (response.data) {
@@ -51,12 +54,13 @@ const Dashboard: React.FC = () => {
       }
     };
 
-    loadEntries(); */
+    loadEntries();
   }, []);
 
   const handleAddAccount = useCallback(() => {
     if (
       newType === '' ||
+      newNature === '' ||
       newDescription === '' ||
       newValue === '' ||
       newField === ''
@@ -67,19 +71,21 @@ const Dashboard: React.FC = () => {
 
     const account = {
       type: newType,
+      nature: newNature,
       description: newDescription,
       value: Number(newValue),
       field: newField,
     };
 
     const newAccounts = [...accountsCreated, account];
-    setAccountsCreated(newAccounts);
 
+    setAccountsCreated(newAccounts);
     setNewType('');
+    setNewNature('');
     setNewField('');
     setNewValue('');
     setNewDescription('');
-  }, [accountsCreated, newDescription, newField, newType, newValue]);
+  }, [accountsCreated, newDescription, newField, newNature, newType, newValue]);
 
   async function handleAddEntry(
     event: FormEvent<HTMLFormElement>,
@@ -101,10 +107,16 @@ const Dashboard: React.FC = () => {
       accounts: accountsCreated,
     };
 
-    setEntries([...entries, newEntry]);
-    setAccountsCreated([]);
-    setNewDate('');
-    setNewHistoric('');
+    try {
+      const response = await api.post('/entries', newEntry);
+      console.log(response.data);
+      setEntries([...entries, newEntry]);
+      setAccountsCreated([]);
+      setNewDate('');
+      setNewHistoric('');
+    } catch (err) {
+      console.error(err);
+    }
   }
 
   return (
@@ -125,10 +137,10 @@ const Dashboard: React.FC = () => {
             <Subtitle>Lançamentos criados: </Subtitle>
             {entries.map(entry => (
               <div className="entry">
-                <span>
-                  Histórico: <span>{entry.historic}</span>
+                <span className="historic">
+                  Histórico do lançamento: <span>{entry.historic}</span>
                 </span>
-                <span>
+                <span className="date">
                   Data: <span>{entry.date}</span>
                 </span>
                 <span>Contas do lançamento:</span>
@@ -144,6 +156,9 @@ const Dashboard: React.FC = () => {
                         </span>
                         <span className="type">
                           Tipo: <span>{account.type}</span>
+                        </span>
+                        <span className="nature">
+                          Natureza: <span>{account.nature}</span>
                         </span>
                         <span className="value">
                           Valor: <span>{formatValue(account.value)}</span>
@@ -179,21 +194,11 @@ const Dashboard: React.FC = () => {
         <Subtitle>Adicione contas para criar um lançamento:</Subtitle>
 
         <AccountsForm>
-          <textarea
-            value={newDescription}
-            onChange={e => setNewDescription(e.target.value)}
-            placeholder="Descrição"
-          />
-          <div>
-            <input
-              value={newField}
-              onChange={e => setNewField(e.target.value)}
-              placeholder="Campo"
-            />
-            <input
-              value={newType}
-              onChange={e => setNewType(e.target.value)}
-              placeholder="Tipo"
+          <div className="text-inputs">
+            <textarea
+              value={newDescription}
+              onChange={e => setNewDescription(e.target.value)}
+              placeholder="Descrição"
             />
             <input
               value={newValue}
@@ -201,6 +206,46 @@ const Dashboard: React.FC = () => {
               step="0.1"
               onChange={e => setNewValue(e.target.value)}
               placeholder="Valor"
+            />
+          </div>
+          <div>
+            <Select
+              name="field"
+              label="Campo"
+              value={newField}
+              onChange={e => {
+                setNewField(e.target.value);
+              }}
+              options={[
+                { value: 'ATIVO', label: 'Ativo' },
+                { value: 'PASSIVO', label: 'Passivo' },
+                { value: 'RECEITAS', label: 'Receitas' },
+                { value: 'DESPESAS', label: 'Despesas' },
+              ]}
+            />
+            <Select
+              name="type"
+              label="Tipo"
+              value={newType}
+              onChange={e => {
+                setNewType(e.target.value);
+              }}
+              options={[
+                { value: 'C', label: 'Crédito' },
+                { value: 'D', label: 'Débito' },
+              ]}
+            />
+            <Select
+              name="nature"
+              label="Natureza"
+              value={newNature}
+              onChange={e => {
+                setNewNature(e.target.value);
+              }}
+              options={[
+                { value: 'Credora', label: 'Credora' },
+                { value: 'Devedora', label: 'Devedora' },
+              ]}
             />
             <button onClick={handleAddAccount} type="button">
               Adicionar conta
@@ -211,8 +256,8 @@ const Dashboard: React.FC = () => {
           <AccountsCreated>
             <Subtitle>Contas a serem adicionadas ao lançamento atual:</Subtitle>
 
-            {accountsCreated.map(account => (
-              <div className="account">
+            {accountsCreated.map((account, index) => (
+              <div key={index} className="account">
                 <span className="description">
                   Descrição: <span>{account.description}</span>
                 </span>
@@ -222,6 +267,9 @@ const Dashboard: React.FC = () => {
                   </span>
                   <span className="type">
                     Tipo: <span>{account.type}</span>
+                  </span>
+                  <span className="nature">
+                    Natureza: <span>{account.nature}</span>
                   </span>
                   <span className="value">
                     Valor: <span>{formatValue(account.value)}</span>

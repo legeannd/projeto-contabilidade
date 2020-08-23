@@ -18,7 +18,8 @@ export const Title = styled.h1`
 export const Subtitle = styled.h2`
   margin-top: 50px;
   font-weight: normal;
-  font-size: 24px;
+  font-size: 20px;
+  width: 100%;
 `;
 
 export const Body = styled.div`
@@ -36,9 +37,9 @@ export const SearchField = styled.div`
   input {
     width: 75%;
     height: 60%;
-    font-size: 24px;
+    font-size: 20px;
     padding-left: 16px;
-    border: 0;
+    border: 1px solid transparent;
     border-radius: 5px;
 
     &:focus {
@@ -49,9 +50,9 @@ export const SearchField = styled.div`
   button {
     width: 20%;
     height: 60%;
-    border: 0;
+    border: 1px solid transparent;
     border-radius: 5px;
-    font-size: 24px;
+    font-size: 20px;
     background: #4030f0;
     color: #fff;
     transition: opacity 0.2s;
@@ -77,9 +78,9 @@ export const EntryForm = styled.form`
 
   input {
     height: 60px;
-    font-size: 24px;
+    font-size: 20px;
     padding-left: 16px;
-    border: 0;
+    border: 1px solid transparent;
     border-radius: 5px;
 
     &:focus {
@@ -90,10 +91,10 @@ export const EntryForm = styled.form`
   textarea {
     width: 60%;
     height: 140px;
-    font-size: 24px;
+    font-size: 20px;
     font-family: Roboto, sans-serif;
     padding: 16px 0 0 16px;
-    border: 0;
+    border: 1px solid transparent;
     border-radius: 5px;
     resize: none;
 
@@ -108,9 +109,9 @@ export const EntryForm = styled.form`
 
   button {
     height: 60px;
-    border: 0;
+    border: 1px solid transparent;
     border-radius: 5px;
-    font-size: 24px;
+    font-size: 20px;
     background: #4030f0;
     color: #fff;
     transition: opacity 0.2s;
@@ -126,19 +127,29 @@ export const AccountsForm = styled.div`
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
+  height: 320px;
 
   div {
     width: 35%;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+
+    div {
+      width: 100%;
+    }
+  }
+
+  .text-inputs {
+    width: 60%;
   }
 
   input {
+    width: 100%;
     height: 60px;
-    font-size: 24px;
+    font-size: 20px;
     padding-left: 16px;
-    border: 0;
+    border: 1px solid transparent;
     border-radius: 5px;
 
     &:focus {
@@ -147,12 +158,11 @@ export const AccountsForm = styled.div`
   }
 
   textarea {
-    width: 60%;
-    height: 320px;
-    font-size: 24px;
+    height: 70%;
+    font-size: 20px;
     font-family: Roboto, sans-serif;
     padding: 16px 0 0 16px;
-    border: 0;
+    border: 1px solid transparent;
     border-radius: 5px;
     resize: none;
 
@@ -167,9 +177,9 @@ export const AccountsForm = styled.div`
 
   button {
     height: 60px;
-    border: 0;
+    border: 1px solid transparent;
     border-radius: 5px;
-    font-size: 24px;
+    font-size: 20px;
     background: #4030f0;
     color: #fff;
     transition: opacity 0.2s;
@@ -181,15 +191,19 @@ export const AccountsForm = styled.div`
 `;
 
 export const AccountsCreated = styled.div`
-  margin-top: 30px;
+  width: 100%;
   max-height: 800px;
   overflow-y: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
 
   .account {
-    height: 180px;
+    width: 550px;
+    height: 200px;
     display: flex;
-    margin: 10px 0;
     flex-wrap: wrap;
+    margin: 10px 10px 0 0;
     background: #a0d0f5;
     color: #000;
     border-radius: 5px;
@@ -197,32 +211,58 @@ export const AccountsCreated = styled.div`
 
     div {
       display: flex;
-      width: 35%;
+      width: 40%;
       flex-direction: column;
       justify-content: space-between;
       margin-top: 10px;
-      margin-right: 20px;
+      margin-right: 0px;
       justify-content: space-between;
     }
   }
 
   span {
-    font-size: 20px;
-    height: 50px;
+    font-size: 16px;
+    height: 30px;
 
     span {
-      font-size: 24px;
+      font-size: 20px;
     }
   }
 
   .description {
     height: 100%;
-    width: 60%;
-    padding: 10px;
+    width: 55%;
+    padding: 10px 20px 0 10px;
+    overflow-x: auto;
   }
 `;
 
-export const Entries = styled.div``;
+export const Entries = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+
+  .entry {
+    width: 100%;
+    margin-top: 30px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+  }
+
+  .historic {
+    height: 100px;
+  }
+
+  .historic,
+  .date {
+    font-size: 16px;
+    width: 50%;
+    overflow-x: auto;
+    span {
+      font-size: 20px;
+    }
+  }
+`;
 
 export const NoData = styled.p`
   width: 100%;
